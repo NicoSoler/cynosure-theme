@@ -1,0 +1,132 @@
+/* Cynosure — Waybar (GTK 3 CSS). GENERATED from sway/waybar/style.css by build.py.
+ *
+ * The bar floats over the desktop as a row of outlined boxes, like the
+ * panels of the breach screen. Header blocks (logo, focused workspace) are
+ * cream with dark text; warnings use the terminal's amber / red.
+ */
+
+@define-color void        {{void}};
+@define-color void_light  {{void-light}};
+@define-color void_raised {{void-raised}};
+@define-color cream       {{cream}};
+@define-color khaki       {{khaki}};
+@define-color red         {{red}};
+@define-color amber       {{amber}};
+
+* {
+  font-family: "Rajdhani", "Barlow Semi Condensed", "Nimbus Sans Narrow", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 0;
+  min-height: 0;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+window#waybar {
+  background: transparent;
+  color: @cream;
+}
+
+/* Every module is a box with a cream rule. */
+#custom-cynosure,
+#workspaces,
+#mode,
+#scratchpad,
+#window,
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#clock,
+#tray {
+  background-color: alpha(@void_light, 0.92);
+  border: 1px solid alpha(@cream, 0.55);
+  padding: 0 12px;
+  letter-spacing: 1px;
+}
+
+/* Header strip: cream block, dark text. */
+#custom-cynosure {
+  background-color: @cream;
+  color: @void;
+  border-color: @cream;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 0 14px;
+}
+
+/* Workspaces: a row of square cells inside one box. */
+#workspaces { padding: 0; }
+
+#workspaces button {
+  color: alpha(@cream, 0.65);
+  background: transparent;
+  border: none;
+  border-right: 1px solid alpha(@cream, 0.25);
+  padding: 0 10px;
+  min-width: 14px;
+}
+#workspaces button:last-child { border-right: none; }
+
+#workspaces button:hover {
+  background: alpha(@cream, 0.12);
+  color: @cream;
+}
+
+#workspaces button.focused {
+  background: @cream;
+  color: @void;
+}
+
+#workspaces button.visible:not(.focused) {
+  background: alpha(@khaki, 0.6);
+  color: @cream;
+}
+
+#workspaces button.urgent {
+  background: @red;
+  color: @void;
+}
+
+#mode {
+  background-color: @amber;
+  color: @void;
+  border-color: @amber;
+}
+
+#window {
+  color: alpha(@cream, 0.8);
+  font-weight: 500;
+}
+window#waybar.empty #window {
+  background: transparent;
+  border-color: transparent;
+}
+
+#network.disconnected,
+#pulseaudio.muted {
+  background-color: transparent;
+  color: @red;
+  border-color: @red;
+}
+
+#cpu.warning,    #memory.warning    { color: @amber; border-color: @amber; }
+#cpu.critical,   #memory.critical   { background-color: @red; color: @void; border-color: @red; }
+
+#clock {
+  background-color: @void_raised;
+}
+
+tooltip {
+  background-color: @void_raised;
+  border: 1px solid @cream;
+  color: @cream;
+}
+tooltip label { color: @cream; }
+
+#tray menu {
+  background-color: @void_raised;
+  border: 1px solid alpha(@cream, 0.55);
+  color: @cream;
+}

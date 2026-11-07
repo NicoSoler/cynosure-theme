@@ -1,0 +1,172 @@
+// ============================================================================
+//  CYNOSURE — GNOME Shell overrides
+//
+//  build.py produces the shell stylesheet in two layers:
+//    1. GNOME's own *light* stylesheet, extracted from the installed
+//       gnome-shell-theme.gresource, recoloured to the Cynosure palette and
+//       with every corner radius flattened to 0 (see COLOR_MAP in build.py).
+//    2. This file (gnome-shell/gnome-shell.scss), compiled and appended. It holds everything a simple
+//       recolour can't express: the navy top bar, hard outlines, inverted
+//       hover states, fonts.
+//
+//  Because these rules come last, a selector of equal specificity to the
+//  upstream one wins. When an override "does nothing", grep
+//  build/upstream/gnome-shell-light.css for a more specific upstream rule.
+// ============================================================================
+
+@import 'palette';
+@import 'fonts';
+
+$rule:      rgba($ink, .85);
+$rule-soft: rgba($ink, .45);
+
+@mixin outline($color: $rule-soft) { box-shadow: inset 0 0 0 1px $color; }
+
+stage {
+  font-family: $font-ui;
+}
+
+// --- Top bar: the "CONTROL PANEL" strip -------------------------------------
+#panel {
+  background-color: $navy;
+  box-shadow: inset 0 -1px rgba($cream, .3);
+  font-weight: 600;
+
+  .panel-button {
+    color: $cream;
+
+    &:hover, &:focus { box-shadow: inset 0 0 0 1px rgba($cream, .7); }
+
+    &:active, &:checked {
+      color: $navy;
+      box-shadow: inset 0 0 0 100px $cream;
+    }
+    &:active:hover, &:checked:hover { box-shadow: inset 0 0 0 100px $paper-light; }
+
+    // Activities: workspace pips are square "lamps".
+    &#panelActivities .workspace-dot { background-color: $cream; }
+    &#panelActivities:checked .workspace-dot,
+    &#panelActivities:active .workspace-dot { background-color: $navy; }
+  }
+
+  // The clock paints its state on an inner box, not on the button itself.
+  // Upstream also gives it its own (ink) text colour with a more specific
+  // selector than `.panel-button`, so it needs restating here.
+  .panel-button.clock-display {
+    color: $cream;
+
+    &:hover .clock, &:focus .clock { box-shadow: inset 0 0 0 1px rgba($cream, .7); }
+    &:active .clock, &:checked .clock { box-shadow: inset 0 0 0 100px $cream; }
+    &:active, &:checked { color: $navy; }
+  }
+}
+
+// --- Menus & popovers -------------------------------------------------------
+.popup-menu-content,
+.candidate-popup-content {
+  background-color: $paper;
+  border: 2px solid $rule;
+  box-shadow: 0 4px 12px rgba(black, .35);
+}
+
+.popup-menu-item {
+  &:hover, &:selected, &:focus {
+    color: $paper-light;
+    background-color: $navy;
+  }
+  &:active { color: $paper-light; background-color: $navy-light; }
+}
+
+.popup-sub-menu { background-color: $paper-dark; }
+
+.popup-separator-menu-item .popup-separator-menu-item-separator {
+  background-color: $rule-soft;
+}
+
+// --- Quick settings ---------------------------------------------------------
+.quick-settings { border: 2px solid $rule; }
+
+.quick-toggle,
+.quick-toggle-has-menu .quick-toggle-menu-button,
+.quick-settings .icon-button,
+.quick-slider .slider-bin {
+  @include outline;
+}
+
+.quick-toggle-menu {
+  background-color: $paper-dark;
+  border: 1px solid $rule-soft;
+}
+
+// --- Calendar & notifications ----------------------------------------------
+.message,
+.events-button,
+.world-clocks-button,
+.weather-button,
+.datemenu-today-button {
+  @include outline;
+}
+
+.message { background-color: $paper-light; }
+
+.calendar .calendar-day:hover { color: $paper-light; background-color: $navy; }
+
+// --- Dialogs: "SYSTEM ERROR" box with a navy title strip -------------------
+.modal-dialog {
+  background-color: $paper;
+  border: 2px solid $rule;
+  border-top: 16px solid $navy;
+  box-shadow: 0 6px 20px rgba(black, .45);
+}
+
+.modal-dialog .modal-dialog-button-box .modal-dialog-button { @include outline; }
+
+// --- Buttons, entries, toggles ---------------------------------------------
+.button { @include outline; }
+
+.search-entry {
+  background-color: $paper-light;
+  color: $ink;
+  border: 1px solid $rule;
+  &:focus { border-color: $navy; box-shadow: inset 0 0 0 1px $navy; }
+}
+
+.toggle-switch {
+  background-color: transparent;
+  border: 1px solid $rule;
+  .handle { background-color: $ink; box-shadow: none; }
+  &:checked { background-color: $navy; border-color: $navy; }
+  &:checked .handle { background-color: $paper-light; }
+}
+
+.slider {
+  -barlevel-height: 6px;
+  -barlevel-background-color: rgba($ink, .2);
+  -barlevel-active-background-color: $navy;
+  -barlevel-overdrive-color: $red;
+  color: $navy;
+}
+
+// --- OSD, switchers, dash ---------------------------------------------------
+.osd-window,
+.switcher-list,
+.workspace-switcher,
+.resize-popup {
+  background-color: $paper;
+  color: $ink;
+  border: 2px solid $rule;
+}
+
+.switcher-list .item-box:selected { background-color: $navy; color: $paper-light; }
+
+.dash-label,
+.window-caption {
+  background-color: $navy;
+  color: $cream;
+  border: 1px solid rgba($cream, .5);
+}
+
+#dash .dash-background {
+  background-color: rgba($navy, .92);
+  border: 1px solid rgba($cream, .35);
+}

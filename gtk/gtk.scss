@@ -1,0 +1,493 @@
+// ============================================================================
+//  CYNOSURE — GTK 4 / libadwaita
+//
+//  Libadwaita apps ignore GTK themes, so this stylesheet is installed as the
+//  user stylesheet (~/.config/gtk-4.0/gtk.css). It loads at USER priority,
+//  above libadwaita, which means plain selectors win regardless of
+//  specificity. That also means: keep rules scoped, or they hit everything.
+//
+//  Structure
+//    1. Tokens      libadwaita variables + our own --cyn-* variables,
+//                   one set per colour scheme (light = parchment terminal,
+//                   dark = breach / messages screen).
+//    2. Base        font, square corners.
+//    3. Widgets     header strips, buttons, entries, lists, toggles, ...
+//
+//  Widget rules only reference variables, never palette colours, so both
+//  schemes share them.
+// ============================================================================
+
+@import 'palette';
+@import 'fonts';
+
+// Emit a token both as a libadwaita named colour (for app CSS that still uses
+// @window_bg_color & co.) and as a CSS variable (what libadwaita ≥ 1.6 reads).
+@mixin tokens($map) {
+  @each $name, $value in $map {
+    @define-color #{str-replace-all($name, '-', '_')} #{$value};
+  }
+  :root {
+    @each $name, $value in $map { --#{$name}: #{$value}; }
+  }
+}
+
+@function str-replace-all($string, $search, $replace) {
+  $index: str-index($string, $search);
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace +
+      str-replace-all(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+  @return $string;
+}
+
+// ----------------------------------------------------------------------------
+// 1. Tokens
+// ----------------------------------------------------------------------------
+
+// Light: aged parchment panels, navy header strips, ink rules.
+$light: (
+  accent-bg-color:      $navy,
+  accent-fg-color:      $paper-light,
+  accent-color:         $navy,
+  destructive-bg-color: $red,
+  destructive-fg-color: $ink,
+  destructive-color:    darken($red, 14%),
+  error-bg-color:       $red,
+  error-fg-color:       $ink,
+  error-color:          darken($red, 14%),
+  warning-bg-color:     $amber,
+  warning-fg-color:     $ink,
+  warning-color:        darken($amber, 26%),
+  success-bg-color:     $olive,
+  success-fg-color:     $paper-light,
+  success-color:        darken($olive, 8%),
+
+  window-bg-color:      $paper,
+  window-fg-color:      $ink,
+  view-bg-color:        $paper-light,
+  view-fg-color:        $ink,
+  headerbar-bg-color:   $navy,
+  headerbar-fg-color:   $cream,
+  headerbar-border-color: $ink,
+  headerbar-backdrop-color: mix($navy, $paper, 82%),
+  headerbar-shade-color: rgba($ink, .45),
+  headerbar-darker-shade-color: rgba($ink, .7),
+  sidebar-bg-color:     $paper-dark,
+  sidebar-fg-color:     $ink,
+  sidebar-backdrop-color: $paper-dark,
+  sidebar-border-color: rgba($ink, .6),
+  sidebar-shade-color:  rgba($ink, .2),
+  secondary-sidebar-bg-color: $paper,
+  secondary-sidebar-fg-color: $ink,
+  secondary-sidebar-backdrop-color: $paper,
+  secondary-sidebar-border-color: rgba($ink, .6),
+  secondary-sidebar-shade-color: rgba($ink, .2),
+  card-bg-color:        transparent,
+  card-fg-color:        $ink,
+  card-shade-color:     rgba($ink, .55),
+  dialog-bg-color:      $paper,
+  dialog-fg-color:      $ink,
+  popover-bg-color:     $paper-light,
+  popover-fg-color:     $ink,
+  popover-shade-color:  rgba($ink, .2),
+  thumbnail-bg-color:   $paper-light,
+  thumbnail-fg-color:   $ink,
+  overview-bg-color:    $paper-dark,
+  overview-fg-color:    $ink,
+  active-toggle-bg-color: $navy,
+  active-toggle-fg-color: $paper-light,
+  shade-color:          rgba($ink, .18),
+  scrollbar-outline-color: rgba($paper-light, .5),
+
+  // Cynosure-only tokens
+  cyn-rule:             rgba($ink, .9),     // box outlines
+  cyn-rule-soft:        rgba($ink, .4),     // dividers, idle outlines
+  cyn-strip-bg:         $navy,              // "CONTROL PANEL" header strips
+  cyn-strip-fg:         $cream,
+  cyn-select-bg:        $navy,              // selected rows / menu items
+  cyn-select-fg:        $paper-light,
+  cyn-hover:            rgba($ink, .08),
+);
+
+// Dark: the breach-protocol / messages screens. Navy-black glass, cream
+// rules, header strips inverted to cream with dark text.
+$dark: (
+  accent-bg-color:      $cream,
+  accent-fg-color:      $void,
+  accent-color:         $cream,
+  destructive-bg-color: $red,
+  destructive-fg-color: $void,
+  destructive-color:    $red-light,
+  error-bg-color:       $red,
+  error-fg-color:       $void,
+  error-color:          $red-light,
+  warning-bg-color:     $amber,
+  warning-fg-color:     $void,
+  warning-color:        $amber,
+  success-bg-color:     $olive,
+  success-fg-color:     $cream,
+  success-color:        lighten($olive, 22%),
+
+  window-bg-color:      $void,
+  window-fg-color:      $cream,
+  view-bg-color:        $void-light,
+  view-fg-color:        $cream,
+  headerbar-bg-color:   $cream,
+  headerbar-fg-color:   $void,
+  headerbar-border-color: $cream,
+  headerbar-backdrop-color: mix($cream, $void, 72%),
+  headerbar-shade-color: rgba(black, .4),
+  headerbar-darker-shade-color: rgba(black, .7),
+  sidebar-bg-color:     $void-light,
+  sidebar-fg-color:     $cream,
+  sidebar-backdrop-color: $void-light,
+  sidebar-border-color: rgba($cream, .5),
+  sidebar-shade-color:  rgba(black, .3),
+  secondary-sidebar-bg-color: $void,
+  secondary-sidebar-fg-color: $cream,
+  secondary-sidebar-backdrop-color: $void,
+  secondary-sidebar-border-color: rgba($cream, .5),
+  secondary-sidebar-shade-color: rgba(black, .3),
+  card-bg-color:        transparent,
+  card-fg-color:        $cream,
+  card-shade-color:     rgba($cream, .45),
+  dialog-bg-color:      $void-light,
+  dialog-fg-color:      $cream,
+  popover-bg-color:     $void-raised,
+  popover-fg-color:     $cream,
+  popover-shade-color:  rgba(black, .35),
+  thumbnail-bg-color:   $void-raised,
+  thumbnail-fg-color:   $cream,
+  overview-bg-color:    $void-light,
+  overview-fg-color:    $cream,
+  active-toggle-bg-color: $cream,
+  active-toggle-fg-color: $void,
+  shade-color:          rgba(black, .4),
+  scrollbar-outline-color: rgba(black, .5),
+
+  cyn-rule:             rgba($cream, .85),
+  cyn-rule-soft:        rgba($cream, .3),
+  cyn-strip-bg:         $cream,
+  cyn-strip-fg:         $void,
+  cyn-select-bg:        $khaki,
+  cyn-select-fg:        $cream,
+  cyn-hover:            rgba($cream, .08),
+);
+
+@include tokens($light);
+@media (prefers-color-scheme: dark) { @include tokens($dark); }
+
+:root {
+  --window-radius: 0px;
+  --document-font-family: #{$font-ui};
+  --monospace-font-family: #{$font-mono};
+}
+
+// ----------------------------------------------------------------------------
+// 2. Base
+// ----------------------------------------------------------------------------
+
+// Every Cynosure surface is a hard-edged box.
+* { border-radius: 0; }
+
+// ...except radio indicators, which need to read as different from checks.
+radio { border-radius: 100%; }
+
+window, popover, tooltip, dialog { font-family: $font-ui; }
+
+.monospace, textview.monospace, .terminal { font-family: $font-mono; }
+
+// Small caps-style labels, like the "SYSTEM CONSOLE" / "GATE STATUS" strips.
+%strip-label {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+// ----------------------------------------------------------------------------
+// 3. Widgets
+// ----------------------------------------------------------------------------
+
+// --- Header strips ----------------------------------------------------------
+// Header bars become the dark "CONTROL PANEL" strip (cream in dark mode),
+// including the flat ones libadwaita blends into the content.
+headerbar,
+toolbarview > .top-bar {
+  background-color: var(--cyn-strip-bg);
+  color: var(--cyn-strip-fg);
+  box-shadow: inset 0 -1px var(--cyn-rule);
+}
+
+headerbar:backdrop,
+toolbarview > .top-bar:backdrop {
+  background-color: var(--headerbar-backdrop-color);
+}
+
+toolbarview > .top-bar headerbar { box-shadow: none; }
+
+headerbar .title,
+headerbar .subtitle,
+windowtitle .title,
+preferencesgroup .heading,
+.navigation-sidebar .heading,
+tabbar tab label,
+stackswitcher label,
+viewswitcher label {
+  @extend %strip-label;
+}
+
+// GTK measures a label before text-transform/letter-spacing are applied, so
+// on centred window titles the extra width gets ellipsized. Titles stay
+// uppercase but drop the tracking.
+headerbar .title, windowtitle .title {
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+// Window controls: square, outline-less, invert on hover.
+windowcontrols > button {
+  border: none;
+  background: none;
+}
+windowcontrols > button > image { background-color: transparent; }
+windowcontrols > button:hover > image {
+  background-color: var(--cyn-strip-fg);
+  color: var(--cyn-strip-bg);
+}
+
+// --- Buttons ----------------------------------------------------------------
+// Outlined boxes, like the "DATATERMS | SECTOR 3 GATE" tabs. Borders use
+// currentColor so they adapt to paper, strips and dark mode alike.
+button {
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid color-mix(in srgb, currentColor 55%, transparent);
+  box-shadow: none;
+}
+
+button:hover {
+  background-color: color-mix(in srgb, currentColor 10%, transparent);
+  border-color: currentColor;
+}
+
+button:active,
+button:checked {
+  background-color: var(--accent-bg-color);
+  color: var(--accent-fg-color);
+  border-color: var(--accent-bg-color);
+}
+
+// On a header strip, the accent would be invisible: invert the strip instead.
+headerbar button:active,
+headerbar button:checked,
+toolbarview > .top-bar button:active,
+toolbarview > .top-bar button:checked {
+  background-color: var(--cyn-strip-fg);
+  color: var(--cyn-strip-bg);
+  border-color: var(--cyn-strip-fg);
+}
+
+button.flat,
+menubutton.flat > button,
+splitbutton.flat > button,
+splitbutton.flat > menubutton > button {
+  border-color: transparent;
+}
+button.flat:hover,
+menubutton.flat > button:hover {
+  border-color: color-mix(in srgb, currentColor 55%, transparent);
+}
+
+button.suggested-action {
+  background-color: var(--accent-bg-color);
+  color: var(--accent-fg-color);
+  border-color: var(--accent-bg-color);
+}
+
+button.destructive-action {
+  background-color: var(--destructive-bg-color);
+  color: var(--destructive-fg-color);
+  border-color: var(--destructive-bg-color);
+}
+
+button.suggested-action:hover,
+button.destructive-action:hover {
+  background-image: linear-gradient(color-mix(in srgb, currentColor 12%, transparent),
+                                    color-mix(in srgb, currentColor 12%, transparent));
+}
+
+// Buttons that live inside another outlined widget shouldn't draw a second box.
+spinbutton > button,
+entry > button,
+searchbar .close,
+tabbar tab button,
+calendar button,
+row button.flat,
+.linked.vertical > button {
+  border-color: transparent;
+}
+
+// --- Entries ----------------------------------------------------------------
+entry,
+spinbutton,
+searchbar > revealer > box entry {
+  background-color: var(--view-bg-color);
+  color: var(--view-fg-color);
+  border: 1px solid color-mix(in srgb, currentColor 55%, transparent);
+  box-shadow: none;
+}
+
+entry:focus-within,
+spinbutton:focus-within {
+  border-color: var(--accent-color);
+  outline: 1px solid var(--accent-color);
+  outline-offset: -2px;
+}
+
+entry.error, entry.warning, entry.success { border-color: var(--accent-color); }
+
+// --- Lists & cards ----------------------------------------------------------
+// The "SYSTEM CONSOLE" box: a thick ink outline with hard row dividers.
+list.boxed-list,
+.boxed-list,
+.boxed-list-separate > row,
+.card {
+  background-color: var(--card-bg-color);
+  border: 2px solid var(--cyn-rule);
+  box-shadow: none;
+}
+
+row:selected,
+.navigation-sidebar > row:selected,
+gridview > child:selected,
+columnview > listview > row:selected {
+  background-color: var(--cyn-select-bg);
+  color: var(--cyn-select-fg);
+}
+
+.navigation-sidebar > row:hover:not(:selected) { background-color: var(--cyn-hover); }
+
+selection,
+text selection,
+label > selection {
+  background-color: var(--cyn-select-bg);
+  color: var(--cyn-select-fg);
+}
+
+separator { background-color: var(--cyn-rule-soft); }
+
+// --- Toggles ----------------------------------------------------------------
+switch {
+  background-color: transparent;
+  border: 1px solid color-mix(in srgb, currentColor 65%, transparent);
+  padding: 2px;
+}
+switch > slider {
+  background-color: color-mix(in srgb, currentColor 80%, transparent);
+  box-shadow: none;
+}
+switch:checked {
+  background-color: var(--accent-bg-color);
+  border-color: var(--accent-bg-color);
+}
+switch:checked > slider { background-color: var(--accent-fg-color); }
+
+check,
+radio {
+  background-color: transparent;
+  border: 1px solid color-mix(in srgb, currentColor 70%, transparent);
+  box-shadow: none;
+}
+check:checked,
+check:indeterminate,
+radio:checked,
+radio:indeterminate {
+  background-color: var(--accent-bg-color);
+  color: var(--accent-fg-color);
+  border-color: var(--accent-bg-color);
+}
+
+// --- Progress & sliders -----------------------------------------------------
+// The "DISCONNECT CT_005" tick bar.
+progressbar > trough {
+  background-color: transparent;
+  border: 1px solid color-mix(in srgb, currentColor 75%, transparent);
+  padding: 2px;
+}
+progressbar.horizontal > trough { min-height: 10px; }
+progressbar.vertical > trough   { min-width: 10px; }
+
+progressbar > trough > progress {
+  background-color: transparent;
+  border: none;
+  background-image: repeating-linear-gradient(to right,
+    var(--accent-bg-color) 0px, var(--accent-bg-color) 4px,
+    transparent 4px, transparent 7px);
+}
+progressbar.horizontal > trough > progress { min-height: 10px; }
+progressbar.vertical > trough > progress {
+  min-width: 10px;
+  background-image: repeating-linear-gradient(to bottom,
+    var(--accent-bg-color) 0px, var(--accent-bg-color) 4px,
+    transparent 4px, transparent 7px);
+}
+
+scale > trough {
+  background-color: color-mix(in srgb, currentColor 18%, transparent);
+}
+scale > trough > highlight { background-color: var(--accent-bg-color); }
+scale > trough > slider {
+  background-color: var(--accent-bg-color);
+  border: 2px solid var(--window-bg-color);
+  box-shadow: 0 0 0 1px var(--accent-bg-color);
+}
+
+levelbar > trough > block.filled { background-color: var(--accent-bg-color); }
+
+// --- Popovers, menus, tooltips ----------------------------------------------
+popover > contents {
+  border: 2px solid var(--cyn-rule);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+}
+popover > arrow { border: 2px solid var(--cyn-rule); }
+
+popover.menu modelbutton:hover,
+popover.menu modelbutton:selected {
+  background-color: var(--cyn-select-bg);
+  color: var(--cyn-select-fg);
+}
+
+tooltip,
+tooltip.background {
+  background-color: var(--cyn-strip-bg);
+  color: var(--cyn-strip-fg);
+  border: 1px solid var(--cyn-strip-fg);
+  box-shadow: none;
+}
+
+// --- Dialogs ----------------------------------------------------------------
+// Floating sheets get the hard outline; alert dialogs also get the navy
+// title strip from the "SYSTEM ERROR" / "PROCESSING" pop-ups.
+floating-sheet > sheet {
+  border: 2px solid var(--cyn-rule);
+  outline: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+}
+
+dialog.alert sheet,
+window.dialog.message {
+  border-top: 16px solid var(--cyn-strip-bg);
+}
+
+// --- Tabs -------------------------------------------------------------------
+tabbar tab:selected {
+  background-color: var(--cyn-strip-fg);
+  color: var(--cyn-strip-bg);
+}
+
+// --- Scrollbars -------------------------------------------------------------
+scrollbar > range > trough > slider {
+  background-color: color-mix(in srgb, currentColor 45%, transparent);
+  min-width: 6px;
+  min-height: 6px;
+}
+scrollbar > range > trough > slider:hover { background-color: color-mix(in srgb, currentColor 70%, transparent); }

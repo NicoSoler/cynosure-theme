@@ -1,0 +1,367 @@
+/* ============================================================================
+ *  CYNOSURE — Firefox browser chrome (tabs, toolbars, menus, panels).
+ *  GENERATED from firefox/userChrome.css by build.py; edit that instead.
+ *
+ *  Look:
+ *    tab strip      = the header strip (navy on parchment / near-black on breach)
+ *    tabs           = outlined boxes, like "DATATERMS | SECTOR 3 GATE"
+ *    selected tab   = filled with the strip's text colour (a pressed button)
+ *    nav bar        = the panel body; URL bar a ruled box in a mono font
+ *    menus/panels   = boxes with a hard rule, navy/khaki hover rows
+ *
+ *  Light/dark follows Firefox's own scheme (Settings > General > Website
+ *  appearance / the "System theme — auto" theme follows the desktop).
+ *
+ *  userChrome.css is a *user* stylesheet: it only beats Firefox's own styles
+ *  (and any installed Firefox theme) with !important.
+ * ==========================================================================*/
+
+/* --- Tokens: parchment (light) -------------------------------------------- */
+:root {
+  --cyn-strip-bg:    {{navy}};
+  --cyn-strip-fg:    {{cream}};
+  --cyn-surface:     {{paper}};
+  --cyn-surface-alt: {{paper-dark}};
+  --cyn-field:       {{paper-light}};
+  --cyn-panel:       {{paper-light}};
+  --cyn-fg:          {{ink}};
+  --cyn-rule:        {{ink}};
+  --cyn-select-bg:   {{navy}};
+  --cyn-select-fg:   {{paper-light}};
+  --cyn-accent:      {{navy}};
+  --cyn-warn:        {{amber}};
+  --cyn-error:       {{red}};
+
+  --cyn-font: "Rajdhani", "Barlow Semi Condensed", "Nimbus Sans Narrow", sans-serif;
+  --cyn-mono: "Share Tech Mono", "JetBrains Mono", "Adwaita Mono", monospace;
+}
+
+/* --- Tokens: breach (dark) ------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cyn-strip-bg:    {{void}};
+    --cyn-strip-fg:    {{cream}};
+    --cyn-surface:     {{void-light}};
+    --cyn-surface-alt: {{void}};
+    --cyn-field:       {{void}};
+    --cyn-panel:       {{void-raised}};
+    --cyn-fg:          {{cream}};
+    --cyn-rule:        {{cream}};
+    --cyn-select-bg:   {{khaki}};
+    --cyn-select-fg:   {{cream}};
+    --cyn-accent:      {{cream}};
+  }
+}
+
+/* --- Firefox's own variables ------------------------------------------------ */
+:root {
+  /* Square corners everywhere. */
+  --tab-border-radius: 0px !important;
+  --toolbarbutton-border-radius: 0px !important;
+  --arrowpanel-border-radius: 0px !important;
+  --panel-border-radius: 0px !important;
+  --border-radius-small: 0px !important;
+  --border-radius-medium: 0px !important;
+  --border-radius-large: 0px !important;
+  --border-radius-xlarge: 0px !important;
+  --button-border-radius: 0px !important;   /* moz-button: search-mode switcher... */
+  --popup-border-radius: 0px !important;    /* Nova URL bar pill, popups */
+
+  /* Names below are Firefox 15x ("Nova"); the older names (Firefox <= 14x /
+     ESR) follow in the second block. Unknown names are simply ignored. */
+
+  /* Tab strip / title bar: the header strip.
+     Nova paints a tinted gradient *over* the toolbox colour
+     (--toolbox-background-image: var(--toolbox-background-gradient)), and with
+     the system theme the colour itself comes from GTK's header bar. */
+  --toolbox-background-image: none !important;
+  --toolbox-background-gradient: none !important;
+  --toolbox-background-color: var(--cyn-strip-bg) !important;
+  --toolbox-background-color-inactive: var(--cyn-strip-bg) !important;
+  --toolbox-text-color: var(--cyn-strip-fg) !important;
+  --toolbox-text-color-inactive: color-mix(in srgb, var(--cyn-strip-fg) 70%, transparent) !important;
+
+  --tab-text-color: var(--cyn-strip-fg) !important;
+  --tab-text-color-hover: var(--cyn-strip-fg) !important;
+  --tab-background-color-hover: color-mix(in srgb, var(--cyn-strip-fg) 14%, transparent) !important;
+  --tab-background-color-selected: var(--cyn-strip-fg) !important;
+  --tab-text-color-selected: var(--cyn-strip-bg) !important;
+  --tab-attention-dot-color: var(--cyn-warn) !important;
+
+  /* Nav bar, bookmarks bar */
+  --toolbar-background-color: var(--cyn-surface) !important;
+  --toolbar-text-color: var(--cyn-fg) !important;
+  --toolbar-border-color: color-mix(in srgb, var(--cyn-rule) 35%, transparent) !important;
+  --toolbarbutton-icon-fill: var(--cyn-fg) !important;
+  --toolbarbutton-icon-fill-hover: var(--cyn-fg) !important;
+  --toolbarbutton-icon-fill-active: var(--cyn-fg) !important;
+  --toolbarbutton-background-color-hover: color-mix(in srgb, var(--cyn-fg) 12%, transparent) !important;
+  --toolbarbutton-background-color-active: color-mix(in srgb, var(--cyn-fg) 22%, transparent) !important;
+  --toolbarbutton-hover-background: color-mix(in srgb, var(--cyn-fg) 12%, transparent) !important;
+  --chrome-content-separator-color: var(--cyn-rule) !important;
+
+  /* URL / search fields */
+  --toolbar-field-background-color: var(--cyn-field) !important;
+  --toolbar-field-background-color-focus: var(--cyn-field) !important;
+  --toolbar-field-text-color: var(--cyn-fg) !important;
+  --toolbar-field-text-color-focus: var(--cyn-fg) !important;
+  --toolbar-field-border-color: color-mix(in srgb, var(--cyn-rule) 55%, transparent) !important;
+  --toolbar-field-border-color-focus: var(--cyn-accent) !important;
+  --urlbarview-background-color-selected: var(--cyn-select-bg) !important;
+  --urlbarview-text-color-selected: var(--cyn-select-fg) !important;
+  --urlbarview-background-color-hover: color-mix(in srgb, var(--cyn-fg) 10%, transparent) !important;
+  --urlbarview-separator-color: color-mix(in srgb, var(--cyn-rule) 30%, transparent) !important;
+
+  /* Panels and menus */
+  --panel-background-color: var(--cyn-panel) !important;
+  --panel-text-color: var(--cyn-fg) !important;
+  --panel-border-color: var(--cyn-rule) !important;
+  --panel-icon-fill: var(--cyn-fg) !important;
+  --panel-separator-color: color-mix(in srgb, var(--cyn-rule) 30%, transparent) !important;
+  --button-background-color-ghost-hover: var(--cyn-select-bg) !important;
+  --button-background-color-ghost-active: color-mix(in srgb, var(--cyn-select-bg) 80%, var(--cyn-fg)) !important;
+
+  /* Sidebar */
+  --sidebar-background-color: var(--cyn-surface-alt) !important;
+  --sidebar-text-color: var(--cyn-fg) !important;
+  --sidebar-border-color: color-mix(in srgb, var(--cyn-rule) 35%, transparent) !important;
+
+  /* Accent / focus / primary buttons */
+  --focus-outline-color: var(--cyn-accent) !important;
+  --color-accent-primary: var(--cyn-accent) !important;
+  --color-accent-primary-hover: color-mix(in srgb, var(--cyn-accent) 85%, var(--cyn-fg)) !important;
+  --button-background-color-primary: var(--cyn-accent) !important;
+  --button-background-color-primary-hover: color-mix(in srgb, var(--cyn-accent) 85%, var(--cyn-fg)) !important;
+  --button-text-color-primary: var(--cyn-select-fg) !important;
+}
+
+/* Older names (Firefox <= 14x, ESR). */
+:root {
+  --toolbox-bgcolor: var(--cyn-strip-bg) !important;
+  --toolbox-bgcolor-inactive: var(--cyn-strip-bg) !important;
+  --toolbox-textcolor: var(--cyn-strip-fg) !important;
+  --lwt-accent-color: var(--cyn-strip-bg) !important;
+  --lwt-text-color: var(--cyn-strip-fg) !important;
+  --tab-selected-bgcolor: var(--cyn-strip-fg) !important;
+  --tab-selected-textcolor: var(--cyn-strip-bg) !important;
+  --toolbar-bgcolor: var(--cyn-surface) !important;
+  --toolbar-color: var(--cyn-fg) !important;
+  --toolbar-field-color: var(--cyn-fg) !important;
+  --toolbar-field-focus-border-color: var(--cyn-accent) !important;
+  --arrowpanel-background: var(--cyn-panel) !important;
+  --arrowpanel-color: var(--cyn-fg) !important;
+  --arrowpanel-border-color: var(--cyn-rule) !important;
+  --urlbarView-highlight-background: var(--cyn-select-bg) !important;
+  --urlbarView-highlight-color: var(--cyn-select-fg) !important;
+}
+
+/* Menus highlight with system colours (-moz-menuhover), so set them directly. */
+menupopup :is(menuitem, menu):where([_moz-menuactive]:not([disabled])) {
+  background-color: var(--cyn-select-bg) !important;
+  color: var(--cyn-select-fg) !important;
+}
+menupopup {
+  --panel-background-color: var(--cyn-panel) !important;
+  --panel-text-color: var(--cyn-fg) !important;
+  --panel-border-color: var(--cyn-rule) !important;
+}
+
+/* --- Fonts: tabs, panels and menus in the terminal face ---------------------- */
+.tabbrowser-tab,
+panel,
+menupopup,
+.panel-subview-body,
+.panel-header {
+  font-family: var(--cyn-font) !important;
+}
+
+/* --- Tabs: outlined boxes, selected one filled ----------------------------- */
+
+.tab-background {
+  border-radius: 0 !important;
+  border: 1px solid color-mix(in srgb, var(--cyn-strip-fg) 40%, transparent) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected]) {
+  border-color: color-mix(in srgb, var(--cyn-strip-fg) 75%, transparent) !important;
+}
+
+.tab-background:is([selected], [multiselected]) {
+  background: var(--cyn-strip-fg) !important;
+  border-color: var(--cyn-strip-fg) !important;
+}
+
+.tab-label {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.tabbrowser-tab[selected] :is(.tab-label, .tab-close-button, .tab-icon-overlay) {
+  color: var(--cyn-strip-bg) !important;
+  fill: var(--cyn-strip-bg) !important;
+}
+
+.tab-close-button {
+  border-radius: 0 !important;
+}
+
+/* Firefox View / tab overflow / new tab buttons in the strip */
+#TabsToolbar toolbarbutton {
+  --toolbarbutton-icon-fill: var(--cyn-strip-fg) !important;
+  --toolbarbutton-hover-background: color-mix(in srgb, var(--cyn-strip-fg) 16%, transparent) !important;
+}
+
+/* --- Nav bar ----------------------------------------------------------------- */
+#nav-bar {
+  box-shadow: none !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--cyn-rule) 35%, transparent) !important;
+}
+
+toolbarbutton.toolbarbutton-1 :is(.toolbarbutton-icon, .toolbarbutton-badge-stack, .toolbarbutton-text) {
+  border-radius: 0 !important;
+}
+
+toolbarbutton.toolbarbutton-1:not([disabled]):hover :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+  outline: 1px solid color-mix(in srgb, var(--cyn-fg) 45%, transparent);
+  outline-offset: -1px;
+}
+
+/* --- Window corners ------------------------------------------------------------
+ * With client-side decorations Firefox clips <body> to the GTK title-bar
+ * radius (browser.css: env(-moz-gtk-csd-titlebar-radius)). */
+:root[customtitlebar] body,
+:root[customtitlebar] dialog::backdrop {
+  border-radius: 0 !important;
+}
+
+/* --- URL bar: a ruled box, the address in mono ---------------------------------
+ * Firefox 15x ("Nova") renders it as `.urlbar` (older: #urlbar) and declares
+ * its radius variables on that element, so they must be reset there — a
+ * :root override doesn't reach them. */
+:is(.urlbar, #urlbar, #searchbar) {
+  --urlbar-border-radius: 0px !important;
+  --urlbarview-border-radius: 0px !important;
+  --urlbar-inner-border-radius: 0px !important;
+  --urlbar-background-border-radius: 0px !important;
+  --urlbar-background-border-top-radius-open: 0px !important;
+  --urlbarview-row-border-radius: 0px !important;
+  --button-border-radius: 0px !important;
+}
+
+:is(.urlbar, #urlbar) > :is(.urlbar-background, #urlbar-background),
+#searchbar {
+  border-radius: 0 !important;
+  border: 1px solid var(--toolbar-field-border-color) !important;
+  box-shadow: none !important;
+}
+
+:is(.urlbar, #urlbar):is([focused], [open], [popover-open]) > :is(.urlbar-background, #urlbar-background) {
+  border-color: var(--cyn-accent) !important;
+  outline: 1px solid var(--cyn-accent) !important;
+  outline-offset: -2px !important;
+}
+
+/* Search-mode switcher (engine icon + chevron) and other boxes in the bar. */
+.searchmode-switcher,
+.urlbar :is(.identity-box-button, #identity-box, #tracking-protection-icon-container, .urlbar-page-action) {
+  border-radius: 0 !important;
+}
+
+#urlbar-input,
+.urlbarView-url {
+  font-family: var(--cyn-mono) !important;
+}
+
+.urlbarView-row,
+.urlbarView-row-inner,
+#urlbar .urlbarView-action-btn {
+  border-radius: 0 !important;
+}
+
+.urlbarView-row:is([selected], :hover) .urlbarView-title,
+.urlbarView-row[selected] .urlbarView-url {
+  color: inherit !important;
+}
+
+/* --- Panels & menus: boxes with a hard rule -------------------------------- */
+panel,
+menupopup {
+  --panel-border-radius: 0px !important;
+}
+
+.panel-arrowcontent,
+panel::part(content),
+menupopup::part(content) {
+  border-radius: 0 !important;
+  border: 1px solid var(--cyn-rule) !important;
+}
+
+.subviewbutton,
+.toolbaritem-combined-buttons > .subviewbutton,
+panelview .toolbarbutton-1 {
+  border-radius: 0 !important;
+}
+
+/* Highlighted rows in panels: navy (parchment) / khaki (breach) with light
+ * text. Panels hold three kinds of rows: .subviewbutton, toolbar buttons that
+ * overflowed (.widget-overflow-list), and toolbar buttons in panelviews. The
+ * last two take their colours from the *toolbar* (ink on parchment), so the
+ * text and icon colour must be set on the row and its children. */
+:is(.subviewbutton, .widget-overflow-list .toolbarbutton-1, panelview .toolbarbutton-1):not([disabled]):is(:hover, [open], :focus-visible) {
+  background-color: var(--cyn-select-bg) !important;
+  color: var(--cyn-select-fg) !important;
+  fill: var(--cyn-select-fg) !important;
+  --toolbarbutton-icon-fill: var(--cyn-select-fg) !important;
+  --toolbarbutton-icon-fill-hover: var(--cyn-select-fg) !important;
+
+  & :is(.toolbarbutton-text, .toolbarbutton-icon, label, image) {
+    color: var(--cyn-select-fg) !important;
+    fill: var(--cyn-select-fg) !important;
+  }
+}
+
+/* The icon/label boxes of overflowed toolbar buttons paint their own hover
+ * background; the row already does. */
+.widget-overflow-list .toolbarbutton-1:not([disabled]):is(:hover, [open]) :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+  background-color: transparent !important;
+  outline: none !important;
+}
+
+/* The panel header ("Extensions", "Downloads"...) as a header strip. */
+.panel-header {
+  background: var(--cyn-strip-bg) !important;
+  color: var(--cyn-strip-fg) !important;
+  font-family: var(--cyn-font) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.panel-header .subviewbutton-back { --toolbarbutton-icon-fill: var(--cyn-strip-fg) !important; }
+
+/* --- Tooltips: the header strip, like the GTK ones ---------------------------
+ * They use the native (GTK) tooltip appearance and have no colour variables,
+ * so turn the native look off and paint them directly. */
+tooltip {
+  appearance: none !important;
+  background-color: var(--cyn-strip-bg) !important;
+  color: var(--cyn-strip-fg) !important;
+  border: 1px solid var(--cyn-strip-fg) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 4px 8px !important;
+  font-family: var(--cyn-font) !important;
+}
+
+/* --- Notification bars, find bar ------------------------------------------- */
+notification-message,
+.notificationbox-stack notification-message {
+  border-radius: 0 !important;
+}
+
+findbar {
+  background: var(--cyn-surface) !important;
+  color: var(--cyn-fg) !important;
+  border-top: 1px solid var(--cyn-rule) !important;
+}

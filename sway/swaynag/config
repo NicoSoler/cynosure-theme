@@ -1,0 +1,31 @@
+# Cynosure — swaynag. GENERATED from sway/swaynag/config by build.py.
+# Used as `swaynag -t cynosure`: a parchment "SYSTEM ERROR" strip.
+
+[cynosure]
+edge=top
+font=Rajdhani SemiBold 13
+background={{paper|bare}}
+text={{ink|bare}}
+border={{ink|bare}}
+border-bottom={{navy|bare}}
+border-bottom-size=4
+button-background={{paper|bare}}
+button-text={{ink|bare}}
+button-border-size=1
+button-padding=6
+button-gap=10
+message-padding=10
+
+[warning]
+background={{amber|bare}}
+text={{ink|bare}}
+border={{ink|bare}}
+border-bottom={{ink|bare}}
+button-background={{amber|bare}}
+
+[error]
+background={{red|bare}}
+text={{ink|bare}}
+border={{ink|bare}}
+border-bottom={{ink|bare}}
+button-background={{red|bare}}

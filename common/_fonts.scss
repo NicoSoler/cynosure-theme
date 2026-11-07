@@ -1,0 +1,5 @@
+// The terminals use a squared, condensed grotesk. Rajdhani is the closest free
+// match; Share Tech Mono covers the boot-log text. Both are OFL and can be
+// installed with `./install.sh --fonts`. Everything falls back gracefully.
+$font-ui:   unquote('"Rajdhani", "Barlow Semi Condensed", "Saira Semi Condensed", "Nimbus Sans Narrow", sans-serif');
+$font-mono: unquote('"Share Tech Mono", "JetBrains Mono", "Adwaita Mono", monospace');

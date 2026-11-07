@@ -1,0 +1,12 @@
+{
+  "name": "cynosure-theme",
+  "displayName": "Cynosure",
+  "description": "Colour themes modelled on the Cynosure terminals from Cyberpunk 2077's Somewhat Damaged: Breach (dark) and Parchment (light).",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "SEE LICENSE IN README.md",
+  "engines": { "vscode": "^1.80.0" },
+  "categories": ["Themes"],
+  "keywords": ["theme", "dark", "light", "cyberpunk", "retro"],
+  "contributes": { "themes": [] }
+}

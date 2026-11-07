@@ -1,0 +1,44 @@
+# Cynosure — swaylock. GENERATED from sway/swaylock/config by build.py.
+# Cream ring on the breach background; amber while "AUTHORIZING",
+# red on "PROCEDURE FAILED".
+
+image=~/.config/sway/wallpaper.svg
+scaling=fill
+color={{void|bare}}
+font=Rajdhani SemiBold
+font-size=22
+indicator-radius=90
+indicator-thickness=8
+show-failed-attempts
+ignore-empty-password
+indicator-caps-lock
+
+inside-color={{void-light|bare}}e6
+ring-color={{cream|bare}}
+line-color=00000000
+separator-color=00000000
+text-color={{cream|bare}}
+key-hl-color={{amber|bare}}
+bs-hl-color={{red|bare}}
+
+inside-clear-color={{void-light|bare}}e6
+ring-clear-color={{cream|bare}}88
+text-clear-color={{cream|bare}}
+line-clear-color=00000000
+
+inside-ver-color={{void-light|bare}}e6
+ring-ver-color={{amber|bare}}
+text-ver-color={{amber|bare}}
+line-ver-color=00000000
+
+inside-wrong-color={{red|bare}}e6
+ring-wrong-color={{red|bare}}
+text-wrong-color={{void|bare}}
+line-wrong-color=00000000
+
+caps-lock-key-hl-color={{amber|bare}}
+caps-lock-bs-hl-color={{red|bare}}
+inside-caps-lock-color={{void-light|bare}}e6
+ring-caps-lock-color={{amber|bare}}
+text-caps-lock-color={{amber|bare}}
+line-caps-lock-color=00000000

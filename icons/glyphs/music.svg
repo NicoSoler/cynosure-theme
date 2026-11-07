@@ -1,0 +1,5 @@
+<!-- two beamed notes -->
+<path d="M11 24 V6 L26 3 V20"/>
+<path d="M11 9 L26 6" stroke-width="4"/>
+<rect x="4" y="21" width="8" height="6" fill="currentColor" fill-opacity="0.85" stroke="none"/>
+<rect x="19" y="17" width="8" height="6" fill="currentColor" fill-opacity="0.85" stroke="none"/>

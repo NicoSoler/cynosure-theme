@@ -1,0 +1,39 @@
+{
+  "_comment": [
+    "Which icons build.py renders from icons/folder.svg.",
+    "icons: name -> options. All options are optional:",
+    "  glyph   file in icons/glyphs/ (without .svg); omit for a plain folder",
+    "  face    [top-left, bottom-right] palette colours for the face gradient",
+    "  label   palette colour of the filing label",
+    "  context theme sub-directory (default: places)",
+    "aliases: extra names that reuse another icon (copied, same context rules)."
+  ],
+
+  "defaults": {
+    "face": ["folder-light", "folder-dark"],
+    "label": "paper-light",
+    "context": "places"
+  },
+
+  "icons": {
+    "folder":             {},
+    "folder-documents":   { "glyph": "documents" },
+    "folder-download":    { "glyph": "download" },
+    "folder-music":       { "glyph": "music" },
+    "folder-pictures":    { "glyph": "pictures" },
+    "folder-videos":      { "glyph": "videos" },
+    "folder-publicshare": { "glyph": "publicshare" },
+    "folder-templates":   { "glyph": "templates" },
+    "folder-remote":      { "glyph": "remote" },
+    "user-home":          { "glyph": "home",  "label": "amber" },
+    "user-desktop":       { "glyph": "desktop" },
+    "user-trash":         { "glyph": "trash", "label": "red" },
+    "folder-drag-accept": { "glyph": "drag-accept", "face": ["folder-edge", "folder"] }
+  },
+
+  "aliases": {
+    "folder-open":     { "icon": "folder" },
+    "folder-visiting": { "icon": "folder" },
+    "inode-directory": { "icon": "folder", "context": "mimetypes" }
+  }
+}

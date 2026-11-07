@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Switch GTK apps between the parchment (light) and breach (dark) terminals.
+#   cynosure-scheme light|dark|toggle
+set -euo pipefail
+
+key=org.gnome.desktop.interface
+current="$(gsettings get "$key" color-scheme)"
+
+case "${1:-toggle}" in
+  light)  want=prefer-light ;;
+  dark)   want=prefer-dark ;;
+  toggle) [[ "$current" == "'prefer-dark'" ]] && want=prefer-light || want=prefer-dark ;;
+  *)      echo "usage: $0 light|dark|toggle" >&2; exit 1 ;;
+esac
+
+gsettings set "$key" color-scheme "$want"
+label=$([[ $want == prefer-dark ]] && echo "BREACH MODE" || echo "PARCHMENT MODE")
+notify-send -a "CYNOSURE SYSTEMS" -t 1500 "$label" "Display scheme switched." 2>/dev/null || true

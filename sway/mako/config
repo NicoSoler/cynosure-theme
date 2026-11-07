@@ -1,0 +1,35 @@
+# Cynosure — mako. GENERATED from sway/mako/config by build.py.
+# Notifications are parchment "SYSTEM ERROR"-style boxes: app name as the
+# small header label, summary in bold, body below.
+
+font=Rajdhani SemiBold 12
+width=380
+height=160
+margin=12
+padding=12,14
+outer-margin=40,0,0,0
+border-size=2
+border-radius=0
+icons=1
+max-icon-size=48
+default-timeout=6000
+layer=overlay
+anchor=top-right
+
+background-color={{paper}}
+text-color={{ink}}
+border-color={{navy}}
+progress-color=over {{navy}}
+
+format=<span size="small" letter_spacing="1500" foreground="{{ink-soft}}">%a</span>\n<b>%s</b>\n%b
+
+[urgency=low]
+border-color={{paper-deep}}
+default-timeout=4000
+
+# The red "ALPHA / ERROR" row.
+[urgency=critical]
+background-color={{red}}
+text-color={{ink}}
+border-color={{ink}}
+default-timeout=0

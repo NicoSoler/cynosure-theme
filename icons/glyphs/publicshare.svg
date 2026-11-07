@@ -1,0 +1,5 @@
+<!-- three linked nodes -->
+<path d="M8 16 L23 8 M8 16 L23 24" stroke-width="2.5"/>
+<rect x="4" y="12" width="8" height="8" fill="currentColor" fill-opacity="0.85" stroke="none"/>
+<rect x="20" y="4" width="8" height="8" fill="currentColor" fill-opacity="0.85" stroke="none"/>
+<rect x="20" y="20" width="8" height="8" fill="currentColor" fill-opacity="0.85" stroke="none"/>

@@ -1,0 +1,74 @@
+{
+  "_comment": [
+    "One entry per VS Code colour theme. build.py renders vscode/theme.jsonc once",
+    "per variant, replacing each {{role}} with the palette colour given here.",
+    "Values are palette names from common/_palette.scss, optionally with an alpha",
+    "suffix (\"khaki|99\"). The template may add its own alpha to plain roles."
+  ],
+
+  "Cynosure Breach": {
+    "file": "cynosure-breach",
+    "uiTheme": "vs-dark",
+    "roles": {
+      "bg": "void",          "bg-alt": "void-light",   "bg-raised": "void-raised",
+      "fg": "cream",         "rule": "cream",
+      "strip-bg": "cream",   "strip-fg": "void",
+      "frame-bg": "void-raised", "frame-fg": "cream",
+      "select-bg": "khaki",  "select-fg": "cream",      "editor-select": "khaki|99",
+      "accent": "cream",     "cursor": "amber",
+      "button-bg": "cream",  "button-fg": "void",
+      "warn": "amber",       "error": "red-light",      "info": "ansi-bright-blue",
+      "success": "ansi-bright-green", "find": "amber",
+
+      "syn-comment": "khaki",          "syn-keyword": "amber",
+      "syn-string": "ansi-bright-green", "syn-number": "ansi-bright-magenta",
+      "syn-function": "ansi-bright-cyan", "syn-type": "ansi-bright-blue",
+      "syn-variable": "cream",         "syn-param": "ansi-white",
+      "syn-tag": "red-light",          "syn-attr": "amber",
+      "syn-regex": "ansi-cyan",        "syn-heading": "amber",
+
+      "term-bg": "void",              "term-fg": "cream",
+      "t-black": "ansi-black",        "t-bright-black": "ansi-bright-black",
+      "t-red": "ansi-red",            "t-bright-red": "ansi-bright-red",
+      "t-green": "ansi-green",        "t-bright-green": "ansi-bright-green",
+      "t-yellow": "ansi-yellow",      "t-bright-yellow": "ansi-bright-yellow",
+      "t-blue": "ansi-blue",          "t-bright-blue": "ansi-bright-blue",
+      "t-magenta": "ansi-magenta",    "t-bright-magenta": "ansi-bright-magenta",
+      "t-cyan": "ansi-cyan",          "t-bright-cyan": "ansi-bright-cyan",
+      "t-white": "ansi-white",        "t-bright-white": "ansi-bright-white"
+    }
+  },
+
+  "Cynosure Parchment": {
+    "file": "cynosure-parchment",
+    "uiTheme": "vs",
+    "roles": {
+      "bg": "paper",         "bg-alt": "paper-dark",   "bg-raised": "paper-light",
+      "fg": "ink",           "rule": "ink",
+      "strip-bg": "navy",    "strip-fg": "cream",
+      "frame-bg": "navy",    "frame-fg": "cream",
+      "select-bg": "navy",   "select-fg": "paper-light", "editor-select": "navy|40",
+      "accent": "navy",      "cursor": "navy",
+      "button-bg": "navy",   "button-fg": "paper-light",
+      "warn": "print-yellow", "error": "print-red",     "info": "print-blue",
+      "success": "print-green", "find": "amber",
+
+      "syn-comment": "print-grey",     "syn-keyword": "print-red",
+      "syn-string": "print-green",     "syn-number": "print-magenta",
+      "syn-function": "print-cyan",    "syn-type": "print-blue",
+      "syn-variable": "ink",           "syn-param": "ink-soft",
+      "syn-tag": "print-red",          "syn-attr": "print-yellow",
+      "syn-regex": "print-cyan",       "syn-heading": "print-red",
+
+      "term-bg": "paper",             "term-fg": "ink",
+      "t-black": "ink",               "t-bright-black": "ink-soft",
+      "t-red": "print-red",           "t-bright-red": "red",
+      "t-green": "print-green",       "t-bright-green": "olive",
+      "t-yellow": "print-yellow",     "t-bright-yellow": "amber",
+      "t-blue": "print-blue",         "t-bright-blue": "navy-light",
+      "t-magenta": "print-magenta",   "t-bright-magenta": "ansi-magenta",
+      "t-cyan": "print-cyan",         "t-bright-cyan": "ansi-cyan",
+      "t-white": "paper-deep",        "t-bright-white": "paper-light"
+    }
+  }
+}

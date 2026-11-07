@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+# cynosure-gtk-sync: make libadwaita apps follow the "GTK theme" setting.
+#
+# libadwaita ignores org.gnome.desktop.interface gtk-theme (what Refine's
+# "GTK 3/4 Theme" row sets); the only hook it offers is the user stylesheet
+# ~/.config/gtk-4.0/gtk.css. This watcher:
+#
+#   * links that file to Cynosure's libadwaita.css while gtk-theme is
+#     "Cynosure", and removes the link when you pick anything else (a
+#     gtk.css of your own is set aside and restored);
+#   * writes Cynosure's gtk-3.0/gtk.css: adw-gtk3 (or adw-gtk3-dark, following
+#     the light/dark setting) plus a small Cynosure layer on top
+#     (gtk-3.0/cynosure-{light,dark}.css: tooltips, which Firefox uses too).
+#     Without adw-gtk3 installed, GTK 3 apps fall back to old Adwaita.
+#
+# Apps only read these files at start-up: restart them after switching.
+#
+#   cynosure-gtk-sync          watch for changes (what the systemd unit runs)
+#   cynosure-gtk-sync --once   apply the current settings and exit
+set -u
+
+THEME=Cynosure
+SCHEMA=org.gnome.desktop.interface
+CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
+LINK="$CONFIG/gtk-4.0/gtk.css"
+ASIDE="$LINK.before-cynosure"
+
+data_dirs() {
+  echo "${XDG_DATA_HOME:-$HOME/.local/share}"
+  echo "$HOME"   # legacy ~/.themes, handled below
+  local IFS=:
+  for d in ${XDG_DATA_DIRS:-/usr/local/share:/usr/share}; do echo "$d"; done
+}
+
+# First existing <dir>/themes/<name> (or ~/.themes/<name>).
+find_theme() {
+  local d
+  while read -r d; do
+    if [[ "$d" == "$HOME" ]]; then
+      [[ -d "$HOME/.themes/$1" ]] && { echo "$HOME/.themes/$1"; return 0; }
+    elif [[ -d "$d/themes/$1" ]]; then
+      echo "$d/themes/$1"; return 0
+    fi
+  done < <(data_dirs)
+  return 1
+}
+
+setting() { gsettings get "$SCHEMA" "$1" | tr -d "'"; }
+
+notify() {
+  [[ "${QUIET:-0}" == 1 ]] && return
+  notify-send -a "CYNOSURE SYSTEMS" -t 4000 "$1" "Restart GTK apps to apply." 2>/dev/null || true
+}
+
+STATE="${XDG_STATE_HOME:-$HOME/.local/state}/cynosure"
+
+sync_gtk4() {
+  local theme_dir css current
+  current="$(setting gtk-theme)"
+  # Remember the last other theme, so uninstalling can switch back to it.
+  if [[ "$current" != "$THEME" ]]; then
+    mkdir -p "$STATE" && echo "$current" > "$STATE/previous-gtk-theme"
+  fi
+  if [[ "$current" == "$THEME" ]]; then
+    theme_dir="$(find_theme "$THEME")" || { echo "cynosure-gtk-sync: $THEME theme not found" >&2; return; }
+    css="$theme_dir/gtk-4.0/libadwaita.css"
+    [[ -f "$css" ]] || { echo "cynosure-gtk-sync: missing $css" >&2; return; }
+    [[ -L "$LINK" && "$(readlink "$LINK")" == "$css" ]] && return
+    mkdir -p "$(dirname "$LINK")"
+    if [[ -e "$LINK" && ! -L "$LINK" ]]; then
+      mv "$LINK" "$ASIDE"
+    fi
+    ln -sfn "$css" "$LINK"
+    notify "CYNOSURE ONLINE"
+  else
+    if [[ -L "$LINK" && "$(readlink "$LINK")" == */"$THEME"/gtk-4.0/* ]]; then
+      rm "$LINK"
+      [[ -e "$ASIDE" ]] && mv "$ASIDE" "$LINK"
+      notify "CYNOSURE OFFLINE"
+    fi
+  fi
+}
+
+sync_gtk3() {
+  local theme_dir base want variant dir content
+  theme_dir="$(find_theme "$THEME")" || return
+  [[ -w "$theme_dir" ]] || return          # system-wide copy: leave it alone
+  dir="$theme_dir/gtk-3.0"
+  want=adw-gtk3 variant=light
+  if [[ "$(setting color-scheme)" == prefer-dark ]]; then
+    want=adw-gtk3-dark variant=dark
+  fi
+  if base="$(find_theme "$want")" && [[ -f "$base/gtk-3.0/gtk.css" ]]; then
+    mkdir -p "$dir"
+    content="/* Written by cynosure-gtk-sync: adw-gtk3 as the base, Cynosure on top. */
+@import url(\"file://$base/gtk-3.0/gtk.css\");"
+    [[ -f "$dir/cynosure-$variant.css" ]] && content+="
+@import url(\"cynosure-$variant.css\");"
+    [[ -f "$dir/gtk.css" && "$(cat "$dir/gtk.css")" == "$content" ]] && return
+    printf '%s\n' "$content" > "$dir/gtk.css"
+  else
+    rm -f "$dir/gtk.css"                   # no adw-gtk3: GTK 3 falls back to Adwaita
+  fi
+}
+
+sync_all() { sync_gtk4; sync_gtk3; }
+
+QUIET=1 sync_all
+[[ "${1:-}" == --once ]] && exit 0
+
+# `gsettings monitor` prints a line per change of the watched key.
+{
+  gsettings monitor "$SCHEMA" gtk-theme &
+  gsettings monitor "$SCHEMA" color-scheme &
+  wait
+} | while read -r _; do sync_all; done

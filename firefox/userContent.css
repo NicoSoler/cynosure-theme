@@ -1,0 +1,113 @@
+/* ============================================================================
+ *  CYNOSURE — Firefox internal pages (New Tab, Home, blank, private window).
+ *  GENERATED from firefox/userContent.css by build.py; edit that instead.
+ *  Websites are left alone: everything is scoped with @-moz-document.
+ * ==========================================================================*/
+
+@-moz-document url("about:blank") {
+  html { background-color: {{paper}} !important; }
+  @media (prefers-color-scheme: dark) {
+    html { background-color: {{void}} !important; }
+  }
+}
+
+@-moz-document url-prefix("about:newtab"), url-prefix("about:home"), url-prefix("about:privatebrowsing") {
+  :root {
+    --newtab-background-color: {{paper}} !important;
+    --newtab-background-color-secondary: {{paper-light}} !important;
+    --newtab-text-primary-color: {{ink}} !important;
+    --newtab-text-secondary-color: {{ink-soft}} !important;
+    --newtab-primary-action-background: {{navy}} !important;
+    --newtab-element-hover-color: {{paper-dark}} !important;
+    --newtab-border-color: {{ink|59}} !important;
+    --newtab-wordmark-color: {{navy}} !important;
+    --border-radius-small: 0px !important;
+    --border-radius-medium: 0px !important;
+    --border-radius-large: 0px !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --newtab-background-color: {{void}} !important;
+      --newtab-background-color-secondary: {{void-raised}} !important;
+      --newtab-text-primary-color: {{cream}} !important;
+      --newtab-text-secondary-color: {{cream|b3}} !important;
+      --newtab-primary-action-background: {{cream}} !important;
+      --newtab-element-hover-color: {{void-light}} !important;
+      --newtab-border-color: {{cream|4d}} !important;
+      --newtab-wordmark-color: {{cream}} !important;
+    }
+  }
+
+  /* The page sets fonts per element (e.g. `font: caption` on tile titles),
+     so a rule on <body> alone isn't inherited: set it everywhere. */
+  body, body * {
+    font-family: "Rajdhani", "Barlow Semi Condensed", "Nimbus Sans Narrow", sans-serif !important;
+  }
+
+  /* The "customize" pencil (a moz-button using the primary accent, violet by
+     default): a square button in the strip colours. */
+  .open-customization-button,
+  .personalize-button {
+    --button-border-radius: 0px !important;
+    --border-radius-circle: 0px !important;
+    --button-background-color-primary: {{navy}} !important;
+    --button-background-color-primary-hover: {{navy-light}} !important;
+    --button-background-color-primary-active: {{navy-light}} !important;
+    --button-text-color-primary: {{cream}} !important;
+    --button-text-color-primary-hover: {{cream}} !important;
+    --button-text-color-primary-active: {{cream}} !important;
+    border-radius: 0 !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    .open-customization-button,
+    .personalize-button {
+      --button-background-color-primary: {{cream}} !important;
+      --button-background-color-primary-hover: {{paper-light}} !important;
+      --button-background-color-primary-active: {{paper-light}} !important;
+      --button-text-color-primary: {{void}} !important;
+      --button-text-color-primary-hover: {{void}} !important;
+      --button-text-color-primary-active: {{void}} !important;
+    }
+  }
+
+  /* Tile titles: one line with an ellipsis. Upstream allows two lines with
+     word-break: break-word, which splits uppercase names mid-word. */
+  .top-site-outer .title {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+  }
+  .top-site-outer .title .title-label {
+    -webkit-line-clamp: 1 !important;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Search box and shortcut tiles as ruled boxes. */
+  .search-handoff-button,
+  .search-wrapper input,
+  .top-site-outer .tile,
+  .top-site-outer .top-site-icon,
+  .card-outer,
+  .ds-card {
+    border-radius: 0 !important;
+  }
+
+  .search-handoff-button,
+  .search-wrapper input {
+    border: 1px solid var(--newtab-border-color) !important;
+    box-shadow: none !important;
+  }
+
+  .top-site-outer .tile {
+    border: 1px solid var(--newtab-border-color) !important;
+    box-shadow: none !important;
+  }
+
+  .top-site-outer .title {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+}

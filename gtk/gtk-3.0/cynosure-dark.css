@@ -1,0 +1,32 @@
+/* Cynosure — GTK 3 layer, breach (dark).
+ * GENERATED from gtk/gtk-3.0/cynosure-dark.css by build.py.
+ *
+ * GTK 3 apps get no full Cynosure style yet: cynosure-gtk-sync writes a
+ * gtk-3.0/gtk.css that imports adw-gtk3(-dark) and then this file, which
+ * restyles only what is worth it on top of adw-gtk3.
+ *
+ * Tooltips matter beyond GTK 3 apps: Firefox draws its toolbar tooltips
+ * (native anonymous content, which userChrome.css can't reach) with the GTK 3
+ * tooltip style, taking background, text colour and radius from here.
+ */
+
+tooltip {
+  border-radius: 0;
+  padding: 4px 6px;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+tooltip.background {
+  background-color: {{void}};
+  border: 1px solid {{cream}};
+}
+
+tooltip * {
+  color: {{cream}};
+  font-family: "Rajdhani", "Barlow Semi Condensed", "Nimbus Sans Narrow", sans-serif;
+}
+
+tooltip.csd decoration {
+  border-radius: 0;
+}

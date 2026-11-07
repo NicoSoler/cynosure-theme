@@ -1,0 +1,4 @@
+<!-- framed landscape -->
+<rect x="4" y="5" width="24" height="22"/>
+<path d="M5 25 L12 16 L17 21 L21 17 L27 25" stroke-width="2.5"/>
+<rect x="19" y="8" width="5" height="5" fill="currentColor" fill-opacity="0.85" stroke="none"/>

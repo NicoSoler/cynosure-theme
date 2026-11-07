@@ -1,0 +1,65 @@
+// ============================================================================
+//  CYNOSURE // ENCRYPTION MEASURES & DEFENSIVE ICE
+//  Palette sampled from the "Somewhat Damaged" terminals (see reference/).
+//
+//  This file is the single source of truth for colours:
+//    * the GTK 4 and Shell SCSS import it,
+//    * build.py parses the `$name: #hex;` lines to recolour the upstream
+//      GNOME Shell stylesheet, and
+//    * the Sway configs use them as {{name}} template placeholders.
+//  Keep one plain hex value per line.
+// ============================================================================
+
+// --- Parchment terminal (light) ---------------------------------------------
+$paper:        #e4d9b0;   // main panel surface ("CONTROL PANEL" body)
+$paper-light:  #ede5c5;   // raised surfaces, entries, views
+$paper-dark:   #d5c898;   // hover / shaded paper
+$paper-deep:   #c3b480;   // pressed, sub-menus, faded print
+
+// --- Ink ---------------------------------------------------------------------
+$ink:          #1b2129;   // body text, box rules
+$ink-soft:     #4b4a3d;   // secondary text (faded print)
+$navy:         #1e2935;   // header strips, selection, progress fill
+$navy-light:   #2d3b49;   // hover on navy
+
+// --- Breach / Messages screens (dark) ----------------------------------------
+$void:         #0d171c;   // screen background
+$void-light:   #13222a;   // panels
+$void-raised:  #1b2e38;   // popovers, raised panels
+$cream:        #e3d8ab;   // text and rules on dark
+$khaki:        #7f7849;   // selected message row
+
+// --- Status ------------------------------------------------------------------
+$red:          #c4524c;   // "ALPHA / ERROR" row, stop sign
+$red-light:    #e2685d;
+$amber:        #e0a63a;   // "AUTHORIZING" warning triangle
+$olive:        #6f7d3c;   // success (not in the refs, kept muted)
+
+// --- Icons: the olive "datafile" folders framing the terminals --------------
+$folder-light: #b8b07a;   // lit top-left of the folder face
+$folder:       #8e8858;   // tabs, mid tone
+$folder-dark:  #66623f;   // shaded bottom-right
+$folder-edge:  #cfc796;   // the thin side edge catching light
+$folder-line:  #2e2f22;   // outlines and printed glyphs
+
+// --- Terminal (ANSI 16) ------------------------------------------------------
+// Muted, sun-faded versions of the usual hues so `ls` output doesn't break
+// the look. Normal / bright pairs.
+$ansi-black:    #13222a;  $ansi-bright-black:   #4b5a62;
+$ansi-red:      #c4524c;  $ansi-bright-red:     #e2685d;
+$ansi-green:    #8a9a4b;  $ansi-bright-green:   #aebd6c;
+$ansi-yellow:   #e0a63a;  $ansi-bright-yellow:  #f0c463;
+$ansi-blue:     #5b7d90;  $ansi-bright-blue:    #82a3b5;
+$ansi-magenta:  #a06878;  $ansi-bright-magenta: #c48d9c;
+$ansi-cyan:     #5f958f;  $ansi-bright-cyan:    #8bbcb5;
+$ansi-white:    #c9bf95;  $ansi-bright-white:   #e3d8ab;
+
+// --- Printed ink (syntax & terminal on parchment) ----------------------------
+// The same hues, darkened like faded print, readable on $paper.
+$print-red:     #9e3a35;
+$print-green:   #55631f;
+$print-yellow:  #8a5e12;
+$print-blue:    #2f5068;
+$print-magenta: #7a3d57;
+$print-cyan:    #2b5f5a;
+$print-grey:    #77724f;   // comments

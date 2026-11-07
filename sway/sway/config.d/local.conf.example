@@ -1,0 +1,10 @@
+# Local Sway overrides. ./install.sh copies this to local.conf once; everything
+# in config.d/ is yours and survives reinstalls and uninstalls. Split it into
+# several *.conf files if you like (e.g. outputs.conf for monitors).
+#
+# List outputs with:  swaymsg -t get_outputs
+#
+# output DP-1 mode 2560x1440@144Hz position 0 0 scale 1
+# output HDMI-A-1 position 2560 0
+#
+# exec some-app-to-autostart
