@@ -1,0 +1,153 @@
+{
+  "_comment": [
+    "JetBrains themes. build.py takes the IDE's own Islands theme (UI + editor",
+    "scheme, extracted from the installed IDE), and for each variant below:",
+    "  ramps    recolour EVERY upstream colour: greys by luminance onto the 'grey'",
+    "           ramp, saturated colours onto the ramp of their hue family. Each ramp",
+    "           is a list of palette colours; a colour lands where its luminance",
+    "           falls between them. 'ui' is used for the UI theme, 'syntax' for the",
+    "           editor scheme (so blue code stays blue while blue UI turns khaki).",
+    "  tokens   then pin Islands' semantic colour tokens (main-window-bg,",
+    "           selection-bg-active...) to exact palette colours.",
+    "  ui       extra UI keys (every corner radius is zeroed automatically).",
+    "  roles    the syntax / terminal colours from common/editor-roles.json, with",
+    "           role_overrides on top.",
+    "Values are palette names, optionally with an alpha suffix (\"cream|4d\")."
+  ],
+
+  "Cynosure Breach": {
+    "id": "cynosure-breach",
+    "dark": true,
+    "upstream": "dark",
+    "roles": "breach",
+    "role_overrides": { "bg": "void-light", "term-bg": "void-light" },
+
+    "ramps": {
+      "ui": {
+        "grey":    ["void", "void-light", "void-raised", "ansi-bright-black", "ansi-white", "cream", "paper-light"],
+        "blue":    ["void-raised", "khaki", "ansi-white", "cream"],
+        "red":     ["void-raised", "red", "red-light", "paper-light"],
+        "amber":   ["void-raised", "amber", "ansi-bright-yellow", "paper-light"],
+        "green":   ["void-raised", "ansi-green", "ansi-bright-green", "paper-light"],
+        "cyan":    ["void-raised", "ansi-cyan", "ansi-bright-cyan", "paper-light"],
+        "magenta": ["void-raised", "ansi-magenta", "ansi-bright-magenta", "paper-light"]
+      },
+      "syntax": {
+        "grey":    ["void", "void-light", "void-raised", "ansi-bright-black", "khaki", "ansi-white", "cream", "paper-light"],
+        "blue":    ["void-raised", "ansi-blue", "ansi-bright-blue", "paper-light"],
+        "red":     ["void-raised", "ansi-red", "ansi-bright-red", "paper-light"],
+        "amber":   ["void-raised", "ansi-yellow", "ansi-bright-yellow", "paper-light"],
+        "green":   ["void-raised", "ansi-green", "ansi-bright-green", "paper-light"],
+        "cyan":    ["void-raised", "ansi-cyan", "ansi-bright-cyan", "paper-light"],
+        "magenta": ["void-raised", "ansi-magenta", "ansi-bright-magenta", "paper-light"]
+      }
+    },
+
+    "tokens": {
+      "main-window-bg": "void",          "main-window-bg-alt": "void",
+      "main-window-border": "cream|33",
+      "tool-window-bg": "void-light",    "tool-window-bg-inline": "void-raised",
+      "tool-window-bg-alt": "void",      "tool-window-border": "cream|4d",
+      "tool-window-border-inline": "cream|33",
+      "editor-bg": "void-light",         "editor-bg-inline": "void-raised",
+      "editor-border": "cream|4d",       "editor-border-inline": "cream|33",
+      "editor-text": "cream",
+      "dialog-bg": "void-light",         "dialog-bg-inline": "void-raised",
+      "dialog-border": "cream|4d",
+      "popup-bg": "void-raised",         "popup-bg-inline": "void-light",
+      "popup-border": "cream|80",        "popup-border-inline": "cream|33",
+      "feedback-bg": "void-raised",      "feedback-border": "cream|80",
+
+      "text-default": "cream",           "text-muted": "cream|99",
+      "text-secondary": "cream|b3",      "text-disabled": "cream|59",
+      "text-over-accent": "void",        "text-over-accent-inverted": "cream",
+      "text-link": "ansi-bright-cyan",
+
+      "selection-bg-active": "khaki",    "selection-bg-active-muted": "khaki|99",
+      "selection-bg-inactive": "khaki|66", "selection-bg-hovered": "cream|14",
+      "tab-selected-bg-active": "void-raised", "tab-selected-bg-inactive": "void-light",
+      "tab-selected-border-active": "cream", "tab-selected-border-inactive": "cream|66",
+      "tab-bg-hovered": "cream|14",
+      "toolbar-bg-hovered": "cream|1a",  "toolbar-bg-pressed": "cream|2e",
+      "toolbar-selected-bg": "cream|26", "toolbar-border": "cream|33",
+
+      "accent-brand-bg": "cream",        "accent-brand-border": "cream",
+      "control-brand-bg": "cream",       "control-brand-border": "cream",
+      "control-bg": "void",              "control-bg-raised": "void-raised",
+      "control-border": "cream|80",      "control-border-raised": "cream|99",
+      "search-match-bg": "amber|66"
+    },
+
+    "ui": {
+      "Island": { "borderColor": "tool-window-bg" }
+    }
+  },
+
+  "Cynosure Parchment": {
+    "id": "cynosure-parchment",
+    "dark": false,
+    "upstream": "light",
+    "roles": "parchment",
+    "role_overrides": {},
+
+    "ramps": {
+      "ui": {
+        "grey":    ["ink", "navy", "ink-soft", "paper-deep", "paper-dark", "paper", "paper-light"],
+        "blue":    ["navy", "navy-light", "paper-deep", "paper-dark", "paper-light"],
+        "red":     ["print-red", "red", "red-light", "paper-light"],
+        "amber":   ["print-yellow", "amber", "paper-light"],
+        "green":   ["print-green", "olive", "paper-light"],
+        "cyan":    ["print-cyan", "ansi-cyan", "paper-light"],
+        "magenta": ["print-magenta", "ansi-magenta", "paper-light"]
+      },
+      "syntax": {
+        "grey":    ["ink", "ink-soft", "print-grey", "paper-deep", "paper-dark", "paper", "paper-light"],
+        "blue":    ["print-blue", "navy-light", "paper-dark", "paper-light"],
+        "red":     ["print-red", "red", "paper-light"],
+        "amber":   ["print-yellow", "amber", "paper-light"],
+        "green":   ["print-green", "olive", "paper-light"],
+        "cyan":    ["print-cyan", "ansi-cyan", "paper-light"],
+        "magenta": ["print-magenta", "ansi-magenta", "paper-light"]
+      }
+    },
+
+    "tokens": {
+      "main-window-bg": "paper-dark",    "main-window-bg-alt": "paper-dark",
+      "main-window-border": "ink|33",
+      "tool-window-bg": "paper",         "tool-window-bg-inline": "paper-light",
+      "tool-window-bg-alt": "paper-dark", "tool-window-border": "ink|4d",
+      "tool-window-border-inline": "ink|33",
+      "editor-bg": "paper",              "editor-bg-inline": "paper-light",
+      "editor-border": "ink|4d",         "editor-border-inline": "ink|33",
+      "editor-text": "ink",
+      "dialog-bg": "paper",              "dialog-bg-inline": "paper-light",
+      "dialog-border": "ink|4d",
+      "popup-bg": "paper-light",         "popup-bg-inline": "paper",
+      "popup-border": "ink|99",          "popup-border-inline": "ink|33",
+      "feedback-bg": "paper-light",      "feedback-border": "ink|99",
+
+      "text-default": "ink",             "text-muted": "ink-soft",
+      "text-secondary": "ink-soft",      "text-disabled": "ink|66",
+      "text-over-accent": "paper-light", "text-over-accent-inverted": "ink",
+      "text-link": "print-blue",
+
+      "selection-bg-active": "paper-deep", "selection-bg-active-muted": "paper-deep|b3",
+      "selection-bg-inactive": "paper-deep|80", "selection-bg-hovered": "ink|14",
+      "tab-selected-bg-active": "paper-light", "tab-selected-bg-inactive": "paper",
+      "tab-selected-border-active": "navy", "tab-selected-border-inactive": "navy|66",
+      "tab-bg-hovered": "ink|14",
+      "toolbar-bg-hovered": "ink|14",    "toolbar-bg-pressed": "ink|26",
+      "toolbar-selected-bg": "ink|1f",   "toolbar-border": "ink|33",
+
+      "accent-brand-bg": "navy",         "accent-brand-border": "navy",
+      "control-brand-bg": "navy",        "control-brand-border": "navy",
+      "control-bg": "paper-light",       "control-bg-raised": "paper-light",
+      "control-border": "ink|80",        "control-border-raised": "ink|99",
+      "search-match-bg": "amber|80"
+    },
+
+    "ui": {
+      "Island": { "borderColor": "tool-window-bg" }
+    }
+  }
+}

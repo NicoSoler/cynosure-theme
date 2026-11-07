@@ -166,7 +166,117 @@ stage {
   border: 1px solid rgba($cream, .5);
 }
 
+// --- Overview -----------------------------------------------------------------
+// The dash is a navy strip holding outlined tiles, a lighter navy (colourful
+// app icons read better on navy than on paper), like the outlined
+// "DATATERMS | SECTOR 3 GATE" boxes. App folders are navy panels a step
+// lighter than the overview background.
+
+$dash-tile:        mix($cream, $navy-light, 10%);
+$dash-tile-hover:  mix($cream, $navy-light, 20%);
+$dash-tile-active: mix($cream, $navy-light, 28%);
+
 #dash .dash-background {
-  background-color: rgba($navy, .92);
+  background-color: $navy;
   border: 1px solid rgba($cream, .35);
+  box-shadow: 0 4px 14px rgba(black, .45);
+}
+
+#dash .dash-item-container {
+  // App icons are .overview-tile; .grid-search-result covers search results.
+  .overview-tile .overview-icon,
+  .grid-search-result .overview-icon,
+  .show-apps .overview-icon {
+    background-color: $dash-tile;
+    color: $cream;
+    box-shadow: inset 0 0 0 1px rgba($cream, .25);
+  }
+  .overview-tile:hover .overview-icon,
+  .grid-search-result:hover .overview-icon,
+  .show-apps:hover .overview-icon {
+    background-color: $dash-tile-hover;
+    color: $cream;
+    box-shadow: inset 0 0 0 1px rgba($cream, .5);
+  }
+  .overview-tile:active .overview-icon,
+  .overview-tile:checked .overview-icon,
+  .overview-tile:active .overview-icon:hover,
+  .overview-tile:checked .overview-icon:hover,
+  .grid-search-result:active .overview-icon,
+  .grid-search-result:checked .overview-icon,
+  .grid-search-result:active .overview-icon:hover,
+  .grid-search-result:checked .overview-icon:hover {
+    background-color: $dash-tile-active;
+    color: $cream;
+    box-shadow: inset 0 0 0 1px $cream;
+  }
+  // Clicking an app leaves it keyboard-focused; upstream paints that state a
+  // dark translucent tile with a navy ring (invisible on navy) — restate it.
+  .overview-tile:focus .overview-icon,
+  .overview-tile:focus .overview-icon:hover,
+  .overview-tile:active .overview-icon:focus,
+  .grid-search-result:focus .overview-icon,
+  .grid-search-result:focus .overview-icon:hover,
+  .grid-search-result:active .overview-icon:focus {
+    background-color: $dash-tile-active;
+    box-shadow: inset 0 0 0 1px $cream !important;
+  }
+  // "Show apps" pressed: the inverted header strip (cream, navy icon)
+  .show-apps:checked .overview-icon,
+  .show-apps:checked:hover .overview-icon {
+    background-color: $cream;
+    color: $navy;
+    box-shadow: none;
+  }
+}
+
+#dash .dash-separator { background-color: rgba($cream, .3); }
+
+// Running apps: an amber indicator lamp (the "AUTHORIZING" amber) instead of
+// a small dot; reads on the parchment dash and in the dark app grid alike.
+.app-grid-running-dot {
+  width: 14px;
+  height: 4px;
+  background-color: $amber;
+}
+
+#dash .dash-separator { background-color: rgba($ink, .35); }
+
+// App folders in the grid: navy panels, a step lighter than the overview.
+$folder-bg: $navy-light;
+
+.app-folder {
+  color: $cream;
+  background-color: $folder-bg;
+  box-shadow: inset 0 0 0 1px rgba($cream, .3);
+
+  &:hover { color: $cream; background-color: mix($cream, $folder-bg, 10%); }
+  &:active, &:active:hover,
+  &:highlighted, &:selected, &:checked,
+  &:highlighted:hover, &:selected:hover, &:checked:hover {
+    color: $cream;
+    background-color: mix($cream, $folder-bg, 18%);
+  }
+}
+
+// The opened folder
+.app-folder-dialog {
+  background-color: $folder-bg;
+  color: $cream;
+  box-shadow: inset 0 0 0 1px rgba($cream, .35), 0 6px 20px rgba(black, .45);
+
+  .overview-tile,
+  .grid-search-result {
+    color: $cream;
+    background-color: transparent;
+    &:hover { color: $cream; background-color: rgba($cream, .1); }
+    &:active, &:highlighted, &:selected, &:checked { color: $cream; background-color: rgba($cream, .18); }
+  }
+
+  .folder-name-container .folder-name-label { color: $cream; }
+  .folder-name-container .folder-name-entry {
+    background-color: $void;
+    color: $cream;
+    border: 1px solid rgba($cream, .5);
+  }
 }

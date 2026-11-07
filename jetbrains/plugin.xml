@@ -1,0 +1,21 @@
+<idea-plugin>
+  <!-- Cynosure — JetBrains themes. GENERATED from jetbrains/plugin.xml by build.py,
+       which also fills in the theme entries and the IDE build it was made from. -->
+  <id>local.cynosure-theme</id>
+  <name>Cynosure</name>
+  <version>0.1.0</version>
+  <vendor>local</vendor>
+  <description><![CDATA[
+    Themes modelled on the Cynosure terminals from Cyberpunk 2077's
+    <i>Somewhat Damaged</i>: <b>Cynosure Breach</b> (dark) and
+    <b>Cynosure Parchment</b> (light). Built on the Islands UI with square
+    panels, generated from the IDE's own Islands theme ({{upstream}}).
+    Fan-made; not affiliated with CD PROJEKT RED.
+  ]]></description>
+  <idea-version since-build="252"/>
+  <depends>com.intellij.modules.platform</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+{{themes}}
+  </extensions>
+</idea-plugin>

@@ -9,8 +9,10 @@
 #                              pick them with Ctrl+K Ctrl+T
 #   ./install.sh firefox       Firefox userChrome/userContent styles (restart Firefox);
 #                              profile: newest one, or FIREFOX_PROFILE=/path/to/profile
+#   ./install.sh jetbrains     JetBrains themes (Cynosure Breach / Parchment) for every
+#                              installed JetBrains IDE; restart it, then Settings > Appearance
 #   ./install.sh fonts         download Rajdhani + Share Tech Mono (OFL)
-#   ./install.sh uninstall theme|sway|vscode|firefox|all
+#   ./install.sh uninstall theme|sway|vscode|firefox|jetbrains|all
 #
 # Targets can be combined:  ./install.sh theme fonts
 #
@@ -313,6 +315,40 @@ uninstall_firefox() {
   say "Removed Cynosure from $profile (restart Firefox)"
 }
 
+# --- JetBrains -------------------------------------------------------------------
+JB_DATA="$DATA/JetBrains"
+JB_PRODUCTS='IntelliJIdea|IdeaIC|PyCharm|PyCharmCE|GoLand|WebStorm|DataGrip|CLion|PhpStorm|RubyMine|Rider|RustRover|Aqua|Writerside|AndroidStudio'
+
+# The newest plugin directory per product (~/.local/share/JetBrains/<Product><version>).
+jetbrains_dirs() {
+  ls -1d "$JB_DATA"/* 2>/dev/null | grep -E "/($JB_PRODUCTS)[0-9]{4}\.[0-9]+$" |
+    sed -E 's#^(.*/([A-Za-z]+))([0-9]{4}\.[0-9]+)$#\2 \3 \1\3#' |
+    sort -k1,1 -k2,2V | awk '{last[$1]=$3} END {for (p in last) print last[p]}' | sort
+}
+
+install_jetbrains() {
+  local jar dirs d
+  jar="$(ls "$ROOT"/dist/jetbrains/*.jar 2>/dev/null | head -n1)"
+  [[ -n "$jar" ]] || { warn "No JetBrains plugin was built (is a JetBrains IDE installed?)"; return 0; }
+  dirs="$(jetbrains_dirs)"
+  [[ -n "$dirs" ]] || { warn "No JetBrains IDE plugin folders in $JB_DATA"; return 0; }
+  while read -r d; do
+    rm -f "$d"/cynosure-theme*.jar
+    cp "$jar" "$d/"
+    say "JetBrains: installed into $(basename "$d")"
+  done <<< "$dirs"
+  say "Restart the IDE(s), then Settings > Appearance & Behavior > Appearance > Theme"
+}
+
+uninstall_jetbrains() {
+  local f
+  for f in "$JB_DATA"/*/cynosure-theme*.jar; do
+    [[ -e "$f" ]] || continue
+    rm -f "$f"
+    say "Removed $f"
+  done
+}
+
 # --- main ----------------------------------------------------------------------
 [[ $# -gt 0 ]] || usage
 
@@ -322,14 +358,15 @@ if [[ "$1" == uninstall ]]; then
     sway)   uninstall_sway ;;
     vscode)  uninstall_vscode ;;
     firefox) uninstall_firefox ;;
-    all)     uninstall_sway; uninstall_vscode; uninstall_firefox; uninstall_theme ;;
+    jetbrains) uninstall_jetbrains ;;
+    all)     uninstall_sway; uninstall_vscode; uninstall_firefox; uninstall_jetbrains; uninstall_theme ;;
     *)     usage ;;
   esac
   say "Done."
   exit 0
 fi
 
-want_theme=0 want_sway=0 want_fonts=0 want_vscode=0 want_firefox=0
+want_theme=0 want_sway=0 want_fonts=0 want_vscode=0 want_firefox=0 want_jetbrains=0
 for target in "$@"; do
   case "$target" in
     theme) want_theme=1 ;;
@@ -337,6 +374,7 @@ for target in "$@"; do
     fonts) want_fonts=1 ;;
     vscode) want_vscode=1 ;;
     firefox) want_firefox=1 ;;
+    jetbrains) want_jetbrains=1 ;;
     gtk|gnome|icons)
       warn "'$target' was replaced by 'theme' (installs everything, enables nothing)."
       want_theme=1 ;;
@@ -345,7 +383,7 @@ for target in "$@"; do
 done
 
 ((want_fonts)) && install_fonts
-((want_theme || want_vscode || want_firefox)) && "$ROOT/build.py"
+((want_theme || want_vscode || want_firefox || want_jetbrains)) && "$ROOT/build.py"
 if ((want_theme)); then
   install_theme
   check_fonts
@@ -353,6 +391,7 @@ fi
 ((want_sway)) && install_sway
 ((want_vscode)) && install_vscode
 ((want_firefox)) && install_firefox
+((want_jetbrains)) && install_jetbrains
 
 if ((want_theme)); then
   say "Done. Restart GTK apps (e.g. nautilus -q) to pick up the changes."

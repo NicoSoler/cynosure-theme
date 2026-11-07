@@ -11,6 +11,7 @@ A desktop theme modelled on the Cynosure terminals from Cyberpunk 2077's
 | **Icons**       | olive "datafile" folder icons; everything else from Adwaita   |
 | **VS Code**     | Cynosure Breach (dark) + Cynosure Parchment (light)          |
 | **Firefox**     | tabs, toolbars, menus, New Tab page (userChrome/userContent) |
+| **JetBrains**   | Cynosure Breach / Parchment UI + editor schemes, all IDEs     |
 
 The look:
 
@@ -27,8 +28,9 @@ The look:
 ./install.sh sway             # theme + the Sway setup
 ./install.sh vscode           # VS Code colour themes (select with Ctrl+K Ctrl+T)
 ./install.sh firefox          # Firefox styles (restart Firefox; FIREFOX_PROFILE=... to pick a profile)
+./install.sh jetbrains        # JetBrains themes into every installed IDE (restart, then pick the theme)
 ./install.sh theme fonts      # ...plus Rajdhani & Share Tech Mono (OFL) from Google Fonts
-./install.sh uninstall theme  # or sway | vscode | firefox | all
+./install.sh uninstall theme  # or sway | vscode | firefox | jetbrains | all
 ```
 
 `theme` installs Cynosure as regular themes, so you switch it on and off yourself:
@@ -102,6 +104,7 @@ installer lists anything missing.
 ```
 common/
   _palette.scss        all colours (single source of truth)
+  editor-roles.json    syntax / terminal roles shared by VS Code and JetBrains
   _fonts.scss          font stacks
 gtk/
   gtk.scss             libadwaita tokens + widget rules -> gtk-4.0/libadwaita.css
@@ -120,6 +123,9 @@ vscode/
   theme.jsonc          colour theme template, written in roles (bg, strip-bg, syn-keyword...)
   variants.json        role -> palette colour, one entry per theme (Breach, Parchment)
   package.json         extension metadata; build.py adds the themes and packs a .vsix
+jetbrains/
+  variants.json        per theme: colour ramps, pinned Islands tokens, UI keys
+  plugin.xml           plugin descriptor (theme entries filled in by build.py)
 firefox/
   userChrome.css       browser frame: tabs, toolbars, URL bar, menus, panels
   userContent.css      New Tab / Home / blank pages only (websites untouched)
@@ -130,6 +136,7 @@ tools/
   preview-gtk.py       render a sample window -> build/preview/gtk-{light,dark}.png
   preview-icons.py     icon contact sheet, dark + parchment -> build/preview/icons.png
   check-firefox-css.py list Firefox variables/selectors we use that Firefox dropped
+  preview-jetbrains.py mock IDE window from the built themes -> build/preview/jetbrains.png
 reference/             screenshots
 ```
 
@@ -235,6 +242,30 @@ instead, which also gives square tabs, the outlined-tab look and the fonts:
   Browser Toolbox (`Ctrl+Alt+Shift+I`) shows what replaced them.
 - Firefox 15x quirks handled: the URL bar is `.urlbar` and declares its radius
   variables on itself, and client-side decorations round `<body>`.
+
+### How the JetBrains themes work
+
+JetBrains' current UI, *Islands*, is built on semantic colour tokens
+(`main-window-bg`, `tool-window-bg`, `selection-bg-active`...). As with the
+Shell, the theme is generated from the installed IDE so it covers every key
+of that version:
+
+1. `build.py` finds an IDE (Toolbox apps, `/opt`, or `JETBRAINS_IDE=/path`) and
+   extracts its Islands themes, their parents, the Default and Darcula editor
+   schemes and every per-language scheme add-on (`XmlDarcula.xml`, ...), cached
+   in `build/upstream/jetbrains/`.
+2. It merges each chain and **recolours every colour** with the ramps in
+   `jetbrains/variants.json`. Greys map by luminance onto the grey ramp, other
+   colours onto their hue family's ramp. The UI and the editor use different
+   ramps, so blue *code* stays blue while blue *UI* (Islands' accent) turns khaki.
+3. It pins the important tokens to exact palette colours, applies the shared
+   syntax roles (`common/editor-roles.json`, same as VS Code and foot), and
+   zeroes every corner radius, so the islands become square panels.
+4. It packs `cynosure-theme-<version>.jar`, a platform-only plugin, so it works in
+   every JetBrains IDE.
+
+After an IDE upgrade, run `./build.py --refresh && ./install.sh jetbrains`. To
+check colours without restarting an IDE: `./tools/preview-jetbrains.py`.
 
 ## Iterating
 
